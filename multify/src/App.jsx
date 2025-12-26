@@ -58,7 +58,7 @@ function App() {
             }}
           >
             <img
-              src="/assets/icons/multify-logo.png"
+              src="/multify-site/assets/icons/multify-logo.png"
               alt="Multify Logo"
               style={{
                 width: 50,
