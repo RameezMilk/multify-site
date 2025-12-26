@@ -1,9 +1,76 @@
 
 
+
 import './App.css';
 import LiquidEther from './components/LiquidEther';
+import { useState, useEffect } from 'react';
+
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 600);
+  useEffect(() => {
+    const onResize = () => setIsMobile(window.innerWidth <= 600);
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
+  return isMobile;
+}
+
+function NavLinks({ style }) {
+  return (
+    <div
+      className="nav-center"
+      style={{
+        background: 'rgba(255,255,255,0.05)',
+        backdropFilter: 'blur(20px)',
+        border: '1px solid rgba(255,255,255,0.1)',
+        borderRadius: 50,
+        padding: '0.5rem',
+        display: 'flex',
+        gap: '0.5rem',
+        maxWidth: '700px',
+        zIndex: 1100,
+        ...style,
+      }}
+    >
+      <a
+        href="#"
+        className="nav-link active"
+        style={{
+          padding: '0.7rem 1.5rem',
+          color: '#fff',
+          textDecoration: 'none',
+          fontSize: '0.95rem',
+          borderRadius: 50,
+          transition: 'all 0.3s ease',
+          position: 'relative',
+          background: 'rgba(255,255,255,0.12)',
+        }}
+      >
+        Home
+      </a>
+      <a
+        href="#product"
+        className="nav-link"
+        style={{
+          padding: '0.7rem 1.5rem',
+          color: 'rgba(255,255,255,0.6)',
+          textDecoration: 'none',
+          fontSize: '0.95rem',
+          borderRadius: 50,
+          transition: 'all 0.3s ease',
+          position: 'relative',
+        }}
+      >
+        Product
+      </a>
+    </div>
+  );
+}
+
+
 
 function App() {
+  const isMobile = useIsMobile();
   return (
     <div
       style={{
@@ -18,8 +85,8 @@ function App() {
         boxSizing: 'border-box',
       }}
     >
-      {/* Navbar */}
-      <nav
+      {/* Top bar: logo left, button right, always visible */}
+      <div
         className="navbar"
         style={{
           position: 'fixed',
@@ -29,137 +96,89 @@ function App() {
           zIndex: 1000,
           width: '100%',
           background: 'transparent',
-          display: 'flex',
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'space-between',
           padding: '1.5rem 3rem',
           boxSizing: 'border-box',
         }}
       >
-        {/* Left: Logo and label */}
-        <div
-          className="logo-section"
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.8rem',
-            flex: '0 0 auto',
-          }}
-        >
+        <div style={{ position: 'relative', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          {/* Left: Logo and label */}
           <div
-            className="logo-icon"
+            className="logo-section"
             style={{
-              width: 50,
-              height: 50,
               display: 'flex',
               alignItems: 'center',
-              justifyContent: 'center',
+              gap: '0.8rem',
+              flex: '0 0 auto',
             }}
           >
-            <img
-              src="/multify-site/assets/icons/multify-logo.png"
-              alt="Multify Logo"
+            <div
+              className="logo-icon"
               style={{
                 width: 50,
                 height: 50,
-                objectFit: 'contain',
-                filter:
-                  'drop-shadow(0 0 4px rgba(20, 241, 149, 0.4)) drop-shadow(0 0 8px rgba(16, 185, 129, 0.3))',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
               }}
-            />
+            >
+              <img
+                src="/multify-site/assets/icons/multify-logo.png"
+                alt="Multify Logo"
+                style={{
+                  width: 50,
+                  height: 50,
+                  objectFit: 'contain',
+                  filter:
+                    'drop-shadow(0 0 4px rgba(20, 241, 149, 0.4)) drop-shadow(0 0 8px rgba(16, 185, 129, 0.3))',
+                }}
+              />
+            </div>
+            <div
+              className="logo-text"
+              style={{
+                fontSize: '1.5rem',
+                fontWeight: 600,
+                color: '#fff',
+                letterSpacing: '-0.02em',
+              }}
+            >
+              Multify
+            </div>
           </div>
-          <div
-            className="logo-text"
+          {/* Center: Nav links (desktop only, absolutely centered) */}
+          {!isMobile && (
+            <div style={{ position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)' }}>
+              <NavLinks />
+            </div>
+          )}
+          {/* Right: Get Started button */}
+          <button
+            className="get-started-btn"
             style={{
-              fontSize: '1.5rem',
-              fontWeight: 600,
-              color: '#fff',
-              letterSpacing: '-0.02em',
-            }}
-          >
-            Multify
-          </div>
-        </div>
-
-        {/* Center: Nav links (absolutely centered) */}
-        <div
-          className="nav-center"
-          style={{
-            position: 'absolute',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            background: 'rgba(255,255,255,0.05)',
-            backdropFilter: 'blur(20px)',
-            border: '1px solid rgba(255,255,255,0.1)',
-            borderRadius: 50,
-            padding: '0.5rem',
-            display: 'flex',
-            gap: '0.5rem',
-            maxWidth: '700px',
-            zIndex: 1100,
-          }}
-        >
-          <a
-            href="#"
-            className="nav-link active"
-            style={{
-              padding: '0.7rem 1.5rem',
-              color: '#fff',
+              padding: '0.8rem 2rem',
+              background: 'rgba(16,185,129,0.15)',
+              backdropFilter: 'blur(20px)',
+              border: '1px solid rgba(16,185,129,0.4)',
+              color: '#10b981',
               textDecoration: 'none',
-              fontSize: '0.95rem',
               borderRadius: 50,
+              fontSize: '0.95rem',
+              fontWeight: 500,
               transition: 'all 0.3s ease',
-              position: 'relative',
-              background: 'rgba(255,255,255,0.12)',
+              cursor: 'pointer',
+              boxShadow: '0 0 20px rgba(16,185,129,0.2)',
+              flex: '0 0 auto',
+              marginLeft: '2rem',
+              whiteSpace: 'nowrap',
+              maxWidth: '180px',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
             }}
           >
-            Home
-          </a>
-          <a
-            href="#product"
-            className="nav-link"
-            style={{
-              padding: '0.7rem 1.5rem',
-              color: 'rgba(255,255,255,0.6)',
-              textDecoration: 'none',
-              fontSize: '0.95rem',
-              borderRadius: 50,
-              transition: 'all 0.3s ease',
-              position: 'relative',
-            }}
-          >
-            Product
-          </a>
+            Get Started
+          </button>
         </div>
-
-        {/* Right: Get Started button */}
-        <button
-          className="get-started-btn"
-          style={{
-            padding: '0.8rem 2rem',
-            background: 'rgba(16,185,129,0.15)',
-            backdropFilter: 'blur(20px)',
-            border: '1px solid rgba(16,185,129,0.4)',
-            color: '#10b981',
-            textDecoration: 'none',
-            borderRadius: 50,
-            fontSize: '0.95rem',
-            fontWeight: 500,
-            transition: 'all 0.3s ease',
-            cursor: 'pointer',
-            boxShadow: '0 0 20px rgba(16,185,129,0.2)',
-            flex: '0 0 auto',
-            marginLeft: '2rem',
-            whiteSpace: 'nowrap',
-            maxWidth: '180px',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-          }}
-        >
-          Get Started
-        </button>
-      </nav>
+      </div>
 
       {/* Hero Section with LiquidEther */}
       <section
@@ -258,6 +277,12 @@ function App() {
           >
             macOS native support only
           </span>
+          {/* Nav links: mobile = below chip only */}
+          {isMobile && (
+            <div style={{ marginTop: '2.5rem', display: 'flex', justifyContent: 'center', width: '100%' }}>
+              <NavLinks />
+            </div>
+          )}
         </div>
       </section>
     </div>
